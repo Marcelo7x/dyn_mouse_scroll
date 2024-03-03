@@ -22,8 +22,7 @@ class ScrollState with ChangeNotifier {
   Function()? handlePipelinedScroll;
 
   ScrollState(this.mobilePhysics, this.durationMS,
-      {ScrollController? controller})
-      : controller = controller ?? ScrollController();
+      {ScrollController? controller}) : this.controller = controller ?? ScrollController();
 
   static double calcMaxDelta(ScrollController controller, double delta) {
     return delta > 0
@@ -72,10 +71,11 @@ class ScrollState with ChangeNotifier {
           if (!outOfBounds && shouldLock) {
             controller.jumpTo(posPixels);
             lastLock = posPixels;
-            controller.position.moveTo(posPixels).whenComplete(() {
-              physics = kMobilePhysics;
-              notifyListeners();
-            });
+            controller.position.moveTo(posPixels)
+              .whenComplete(() {
+                physics = kMobilePhysics;
+                notifyListeners();
+              });
             return;
           } else {
             if (lastLock != null || outOfBounds) {
